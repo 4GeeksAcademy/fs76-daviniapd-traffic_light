@@ -222,7 +222,7 @@ const TrafficLight = () => {
                     <button className="purple-light" style={{ background: purplePosition, borderColor: purpleBorder, boxShadow: purpleShadow }} onClick={purple}></button>
                 )}
             </div>
-            <button type="button" className="btn btn-success btn-lg mt-5 mb-2" id="cycleButton" onClick={cycleOn}>{cycle ? "Cycle OFF" : "Cycle ON"}</button>
+            <button type="button" className="btn btn-success btn-lg mt-4 mb-2" id="cycleButton" onClick={cycleOn}>{cycle ? "Cycle OFF" : "Cycle ON"}</button>
             <button type="button" className="btn btn-primary btn-lg" id="purpleButton" onClick={togglePurple}>{showPurple ? "Remove Color" : "Add Color"}</button>
         </>
     );
