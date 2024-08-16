@@ -23,7 +23,7 @@ body {
     justify-content: center;
     height: auto;
     width: 10vw;
-    margin-top: 10vw;
+
     padding: 15px;
     list-style-type: none;
     border: 6px double grey;
@@ -34,9 +34,11 @@ body {
 
 }
 
+
 .red-light,
 .amber-light,
-.green-light {
+.green-light,
+.purple-light {
     width: 5vw;
     height: 5vw;
     border-radius: 50%;
@@ -61,4 +63,22 @@ body {
     background: linear-gradient(-90deg, #45484d 0%, #000000 100%);
     border-radius: 10%;
     box-shadow: 0px 3px 0 5px rgba(0, 0, 0, .8);
+}
+
+
+
+#cycleButton, 
+#purpleButton {
+    position: flex;
+    z-index: 1000;
+    background-color: #0e6662;
+    border-color: #baa898;
+    transition: transform 0.2s;
+    box-shadow: 0px 0px 4px 2px rgb(0 0 0 / 35%);
+}
+
+#cycleButton:active,
+#purpleButton:active {
+    transform: scale(1.05);
+    cursor: pointer;
 }
