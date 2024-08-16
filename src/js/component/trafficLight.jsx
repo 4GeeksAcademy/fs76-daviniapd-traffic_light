@@ -82,7 +82,7 @@ const TrafficLight = () => {
                     setGreenPosition("#016801");
                     setGreenBorder("black");
                     setGreenShadow("none");
-                    if (showPurple) { // Añadido
+                    if (showPurple) {
                         setPurplePosition("#800080");
                         setPurpleBorder("beige");
                         setPurpleShadow("0 0 30px #800080");
@@ -203,6 +203,12 @@ const TrafficLight = () => {
 
     const togglePurple = () => {
         setShowPurple(!showPurple);
+        if (cycle) {
+            clearInterval(intervalId);
+            setCycle(false);
+            setIntervalId(null);
+            cycleOn();
+        }
     };
 
     return (
