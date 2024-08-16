@@ -192,6 +192,7 @@ const TrafficLight = () => {
                 setGreenPosition("#016801");
                 setGreenBorder("black");
                 setGreenShadow("none");
+                
             } else {
                 setPurplePosition("#4B0082");
                 setPurpleBorder("black");
