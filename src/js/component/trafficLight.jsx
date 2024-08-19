@@ -1,41 +1,35 @@
 import React, { useState } from "react";
 import "/styles.css";
 
+const defaultStates = {
+    red: { color: "#990000", border: "black", shadow: "none" },
+    amber: { color: "#b86514", border: "black", shadow: "none" },
+    green: { color: "#016801", border: "black", shadow: "none" },
+    purple: { color: "#4B0082", border: "black", shadow: "none" }
+};
+
+const activeStates = {
+    red: { color: "red", border: "beige", shadow: "0 0 30px red" },
+    amber: { color: "#ff8d1e", border: "beige", shadow: "0 0 30px #ff8d1e" },
+    green: { color: "#06cd06", border: "beige", shadow: "0 0 30px #06cd06" },
+    purple: { color: "#800080", border: "beige", shadow: "0 0 30px #800080" }
+};
+
 const TrafficLight = () => {
-    const [redPosition, setRedPosition] = useState("#990000");
-    const [amberPosition, setAmberPosition] = useState("#b86514");
-    const [greenPosition, setGreenPosition] = useState("#016801");
-    const [purplePosition, setPurplePosition] = useState("#4B0082");
-
-    const [redBorder, setRedBorder] = useState("black");
-    const [amberBorder, setAmberBorder] = useState("black");
-    const [greenBorder, setGreenBorder] = useState("black");
-    const [purpleBorder, setPurpleBorder] = useState("black");
-
-    const [redShadow, setRedShadow] = useState("none");
-    const [amberShadow, setAmberShadow] = useState("none");
-    const [greenShadow, setGreenShadow] = useState("none");
-    const [purpleShadow, setPurpleShadow] = useState("none");
-
+    const [lights, setLights] = useState(defaultStates);
     const [cycle, setCycle] = useState(false);
     const [intervalId, setIntervalId] = useState(null);
-    const [showPurple, setShowPurple] = useState(false); 
+    const [showPurple, setShowPurple] = useState(false);
 
     const resetTrafficLight = () => {
-        setRedPosition("#990000");
-        setAmberPosition("#b86514");
-        setGreenPosition("#016801");
-        setPurplePosition("#4B0082");
+        setLights(defaultStates);
+    };
 
-        setRedBorder("black");
-        setAmberBorder("black");
-        setGreenBorder("black");
-        setPurpleBorder("black");
-
-        setRedShadow("none");
-        setAmberShadow("none");
-        setGreenShadow("none");
-        setPurpleShadow("none");
+    const updateLight = (color, newState) => {
+        setLights(prevLights => ({
+            ...prevLights,
+            [color]: { ...prevLights[color], ...newState }
+        }));
     };
 
     const cycleOn = () => {
@@ -48,58 +42,32 @@ const TrafficLight = () => {
             setCycle(true);
             let currentColor = "red";
 
-            setRedPosition("red");
-            setRedBorder("beige");
-            setRedShadow("0 0 30px red");
-            setAmberPosition("#b86514");
-            setAmberBorder("black");
-            setAmberShadow("none");
-            setGreenPosition("#016801");
-            setGreenBorder("black");
-            setGreenShadow("none");
-            setPurplePosition("#4B0082");
-            setPurpleBorder("black");
-            setPurpleShadow("none");
+            updateLight("red", activeStates.red);
+            updateLight("amber", defaultStates.amber);
+            updateLight("green", defaultStates.green);
+            updateLight("purple", defaultStates.purple);
 
             const newIntervalId = setInterval(() => {
                 if (currentColor === "red") {
-                    setRedPosition("#990000");
-                    setRedBorder("black");
-                    setRedShadow("none");
-                    setAmberPosition("#ff8d1e");
-                    setAmberBorder("beige");
-                    setAmberShadow("0 0 30px #ff8d1e");
+                    updateLight("red", defaultStates.red);
+                    updateLight("amber", activeStates.amber);
                     currentColor = "amber";
                 } else if (currentColor === "amber") {
-                    setAmberPosition("#b86514");
-                    setAmberBorder("black");
-                    setAmberShadow("none");
-                    setGreenPosition("#06cd06");
-                    setGreenBorder("beige");
-                    setGreenShadow("0 0 30px #06cd06");
+                    updateLight("amber", defaultStates.amber);
+                    updateLight("green", activeStates.green);
                     currentColor = "green";
                 } else if (currentColor === "green") {
-                    setGreenPosition("#016801");
-                    setGreenBorder("black");
-                    setGreenShadow("none");
+                    updateLight("green", defaultStates.green);
                     if (showPurple) {
-                        setPurplePosition("#800080");
-                        setPurpleBorder("beige");
-                        setPurpleShadow("0 0 30px #800080");
+                        updateLight("purple", activeStates.purple);
                         currentColor = "purple";
                     } else {
-                        setRedPosition("red");
-                        setRedBorder("beige");
-                        setRedShadow("0 0 30px red");
+                        updateLight("red", activeStates.red);
                         currentColor = "red";
                     }
                 } else if (currentColor === "purple") {
-                    setPurplePosition("#4B0082");
-                    setPurpleBorder("black");
-                    setPurpleShadow("none");
-                    setRedPosition("red");
-                    setRedBorder("beige");
-                    setRedShadow("0 0 30px red");
+                    updateLight("purple", defaultStates.purple);
+                    updateLight("red", activeStates.red);
                     currentColor = "red";
                 }
             }, 3000);
@@ -108,96 +76,11 @@ const TrafficLight = () => {
         }
     };
 
-    const red = () => {
+    const handleLightClick = (color) => {
         if (!cycle) {
-            if (redPosition === "#990000" && redBorder === "black") {
-                setRedPosition("red");
-                setRedBorder("beige");
-                setRedShadow("0 0 30px red");
-                setAmberPosition("#b86514");
-                setAmberBorder("black");
-                setAmberShadow("none");
-                setGreenPosition("#016801");
-                setGreenBorder("black");
-                setGreenShadow("none");
-                setPurplePosition("#4B0082");
-                setPurpleBorder("black");
-                setPurpleShadow("none");
-            } else {
-                setRedPosition("#990000");
-                setRedBorder("black");
-                setRedShadow("none");
-            }
-        }
-    };
-
-    const amber = () => {
-        if (!cycle) {
-            if (amberPosition === "#b86514" && amberBorder === "black") {
-                setAmberPosition("#ff8d1e");
-                setAmberBorder("beige");
-                setAmberShadow("0 0 30px #ff8d1e");
-                setRedPosition("#990000");
-                setRedBorder("black");
-                setRedShadow("none");
-                setGreenPosition("#016801");
-                setGreenBorder("black");
-                setGreenShadow("none");
-                setPurplePosition("#4B0082");
-                setPurpleBorder("black");
-                setPurpleShadow("none");
-            } else {
-                setAmberPosition("#b86514");
-                setAmberBorder("black");
-                setAmberShadow("none");
-            }
-        }
-    };
-
-    const green = () => {
-        if (!cycle) {
-            if (greenPosition === "#016801" && greenBorder === "black") {
-                setGreenPosition("#06cd06");
-                setGreenBorder("beige");
-                setGreenShadow("0 0 30px #06cd06");
-                setRedPosition("#990000");
-                setRedBorder("black");
-                setRedShadow("none");
-                setAmberPosition("#b86514");
-                setAmberBorder("black");
-                setAmberShadow("none");
-                setPurplePosition("#4B0082");
-                setPurpleBorder("black");
-                setPurpleShadow("none");
-            } else {
-                setGreenPosition("#016801");
-                setGreenBorder("black");
-                setGreenShadow("none");
-            }
-        }
-    };
-
-    const purple = () => {
-        if (!cycle) {
-            if (purplePosition === "#4B0082" && purpleBorder === "black") {
-                setPurplePosition("#800080");
-                setPurpleBorder("beige");
-                setPurpleShadow("0 0 30px #800080");
-                setRedPosition("#990000");
-                setRedBorder("black");
-                setRedShadow("none");
-                setAmberPosition("#b86514");
-                setAmberBorder("black");
-                setAmberShadow("none");
-                setGreenPosition("#016801");
-                setGreenBorder("black");
-                setGreenShadow("none");
-                
-            } else {
-                setPurplePosition("#4B0082");
-                setPurpleBorder("black");
-                setPurpleShadow("none");
-            }
+            const isActive = lights[color].color !== defaultStates[color].color;
+            const newState = isActive ? defaultStates[color] : activeStates[color];
+            updateLight(color, newState);
         }
     };
 
@@ -215,11 +98,11 @@ const TrafficLight = () => {
         <>
             <div className="stick"></div>
             <div className="traffic-light">
-                <button className="red-light" style={{ background: redPosition, borderColor: redBorder, boxShadow: redShadow }} onClick={red}></button>
-                <button className="amber-light" style={{ background: amberPosition, borderColor: amberBorder, boxShadow: amberShadow }} onClick={amber}></button>
-                <button className="green-light" style={{ background: greenPosition, borderColor: greenBorder, boxShadow: greenShadow }} onClick={green}></button>
+                <button className="red-light" style={{ background: lights.red.color, borderColor: lights.red.border, boxShadow: lights.red.shadow }} onClick={() => handleLightClick('red')}></button>
+                <button className="amber-light" style={{ background: lights.amber.color, borderColor: lights.amber.border, boxShadow: lights.amber.shadow }} onClick={() => handleLightClick('amber')}></button>
+                <button className="green-light" style={{ background: lights.green.color, borderColor: lights.green.border, boxShadow: lights.green.shadow }} onClick={() => handleLightClick('green')}></button>
                 {showPurple && (
-                    <button className="purple-light" style={{ background: purplePosition, borderColor: purpleBorder, boxShadow: purpleShadow }} onClick={purple}></button>
+                    <button className="purple-light" style={{ background: lights.purple.color, borderColor: lights.purple.border, boxShadow: lights.purple.shadow }} onClick={() => handleLightClick('purple')}></button>
                 )}
             </div>
             <button type="button" className="btn btn-success btn-lg mt-4 mb-2" id="cycleButton" onClick={cycleOn}>{cycle ? "Cycle OFF" : "Cycle ON"}</button>
