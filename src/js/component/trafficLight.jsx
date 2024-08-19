@@ -35,10 +35,10 @@ const TrafficLight = () => {
 
     const cycleOn = () => {
         if (cycle) {
-          clearInterval(intervalId);
-          setCycle(false);
-          setIntervalId(null);
-          resetTrafficLight();
+            clearInterval(intervalId); // Clear the interval
+            setCycle(false);
+            setIntervalId(null);
+            resetTrafficLight(); 
         } else {
           setCycle(true);
           let currentColor = "red";
@@ -120,23 +120,30 @@ const TrafficLight = () => {
         }
       };
 
-    const handleLightClick = (color) => {
-        if (!cycle) {
-            const isActive = lights[color].color !== defaultStates[color].color;
-            const newState = isActive ? defaultStates[color] : activeStates[color];
-            updateLight(color, newState);
+      const handleLightClick = (color) => {
+        if (cycle) {
+          clearInterval(intervalId);
+          setCycle(false);
+          setIntervalId(null);
+          resetTrafficLight(); 
         }
-    };
+        const isActive = lights[color].color !== defaultStates[color].color;
+        const newState = isActive ? defaultStates[color] : activeStates[color];
+        updateLight(color, newState);
+      };
 
     const togglePurple = () => {
         setShowPurple(!showPurple);
         if (cycle) {
-            clearInterval(intervalId);
-            setCycle(false);
-            setIntervalId(null);
-            cycleOn();
+          clearInterval(intervalId);
+          setCycle(false);
+          setIntervalId(null);
+          resetTrafficLight(); 
         }
-    };
+        const isActive = lights[color].color !== defaultStates[color].color;
+        const newState = isActive ? defaultStates[color] : activeStates[color];
+        updateLight(color, newState);
+      };
 
     return (
         <>
