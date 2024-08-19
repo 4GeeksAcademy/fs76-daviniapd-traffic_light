@@ -32,49 +32,93 @@ const TrafficLight = () => {
         }));
     };
 
+
     const cycleOn = () => {
         if (cycle) {
-            clearInterval(intervalId);
-            setCycle(false);
-            setIntervalId(null);
-            resetTrafficLight();
+          clearInterval(intervalId);
+          setCycle(false);
+          setIntervalId(null);
+          resetTrafficLight();
         } else {
-            setCycle(true);
-            let currentColor = "red";
-
-            updateLight("red", activeStates.red);
-            updateLight("amber", defaultStates.amber);
-            updateLight("green", defaultStates.green);
-            updateLight("purple", defaultStates.purple);
-
-            const newIntervalId = setInterval(() => {
-                if (currentColor === "red") {
-                    updateLight("red", defaultStates.red);
-                    updateLight("amber", activeStates.amber);
-                    currentColor = "amber";
-                } else if (currentColor === "amber") {
-                    updateLight("amber", defaultStates.amber);
-                    updateLight("green", activeStates.green);
-                    currentColor = "green";
-                } else if (currentColor === "green") {
+          setCycle(true);
+          let currentColor = "red";
+      
+          updateLight("red", activeStates.red);
+          updateLight("amber", defaultStates.amber);
+          updateLight("green", defaultStates.green);
+          updateLight("purple", defaultStates.purple);
+      
+          const newIntervalId = setInterval(() => {
+            if (currentColor === "red") {
+              setTimeout(() => {
+                let blinkCount = 0;
+                const blinkInterval = setInterval(() => {
+                  if (blinkCount < 5) {
+                    updateLight("red", {
+                      ...activeStates.red,
+                      shadow: blinkCount % 2 === 0 ? "0 0 30px red" : "none",
+                      border: blinkCount % 2 === 0 ? "beige" : "black",
+                      color: blinkCount % 2 === 0 ? "red" : "#990000"
+                    });
+                    blinkCount++;
+                  } else {
+                    clearInterval(blinkInterval);
+                  }
+                }, 150);
+                setTimeout(() => {
+                  clearInterval(blinkInterval);
+                  updateLight("red", defaultStates.red);
+                  updateLight("amber", activeStates.amber);
+                  currentColor = "amber";
+                }, 1000); 
+              }, 1000);
+            } else if (currentColor === "amber") {
+              setTimeout(() => {
+                updateLight("amber", defaultStates.amber);
+                updateLight("green", activeStates.green);
+                currentColor = "green";
+              }, 1000);
+            } else if (currentColor === "green") {
+              setTimeout(() => {
+                let blinkCount = 0;
+                const blinkInterval = setInterval(() => {
+                  if (blinkCount < 5) {
+                    updateLight("green", {
+                      ...activeStates.green,
+                      shadow: blinkCount % 2 === 0 ? "0 0 30px green" : "none",
+                      border: blinkCount % 2 === 0 ? "beige" : "black",
+                      color: blinkCount % 2 === 0 ? "#06cd06" : "#016801"
+                    });
+                    blinkCount++;
+                  } else {
+                    clearInterval(blinkInterval);
+                  }
+                }, 150);
+                setTimeout(() => {
+                  clearInterval(blinkInterval);
+                  if (showPurple) {
                     updateLight("green", defaultStates.green);
-                    if (showPurple) {
-                        updateLight("purple", activeStates.purple);
-                        currentColor = "purple";
-                    } else {
-                        updateLight("red", activeStates.red);
-                        currentColor = "red";
-                    }
-                } else if (currentColor === "purple") {
-                    updateLight("purple", defaultStates.purple);
+                    updateLight("purple", activeStates.purple);
+                    currentColor = "purple";
+                  } else {
+                    updateLight("green", defaultStates.green);
                     updateLight("red", activeStates.red);
                     currentColor = "red";
-                }
-            }, 3000);
-
-            setIntervalId(newIntervalId);
+                  }
+                }, 1000);
+              }, 1000);
+            } else if (currentColor === "purple") {
+              setTimeout(() => {
+                updateLight("purple", defaultStates.purple);
+                updateLight("red", activeStates.red);
+                currentColor = "red";
+              }, 1000);
+            }
+          }, 3000);
+      
+          setIntervalId(newIntervalId);
         }
-    };
+      };
 
     const handleLightClick = (color) => {
         if (!cycle) {
